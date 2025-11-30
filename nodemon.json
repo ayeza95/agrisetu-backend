@@ -1,0 +1,6 @@
+{
+  "watch": ["."],
+  "ext": "js,json",
+  "ignore": ["../output.css"],
+  "exec": "node server.js"
+}
