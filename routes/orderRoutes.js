@@ -6,7 +6,6 @@ import Crop from "../models/Crop.js";
 
 const router = express.Router();
 
-// POST /api/orders - Create new order
 router.post("/", async (req, res) => {
     try {
         console.log("[API] Creating new order");

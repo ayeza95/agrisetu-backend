@@ -3,9 +3,6 @@ import Crop from '../models/Crop.js';
 import bcrypt from 'bcryptjs';
 import mongoose from 'mongoose';
 
-// @desc    Register a new user
-// @route   POST /api/users/signup
-// @access  Public
 export const signup = async (req, res) => {
     
     const { name, email, password, phone, role, farmerDetails, address } = req.body;
@@ -50,9 +47,6 @@ export const signup = async (req, res) => {
     }
 };
 
-// @desc    Auth user & get token
-// @route   POST /api/users/login
-// @access  Public
 export const login = async (req, res) => {
     const { email, password } = req.body;
     
@@ -89,9 +83,7 @@ export const login = async (req, res) => {
     }
 };
 
-// @desc    Get all users
-// @route   GET /api/users
-// @access  Admin
+
 export const getAllUsers = async (req, res) => {
     try {
         const users = await User.find({}).select('-password');
@@ -101,9 +93,7 @@ export const getAllUsers = async (req, res) => {
     }
 };
 
-// @desc    Delete a user and their associated data (crops)
-// @route   DELETE /api/users/:id
-// @access  Admin
+
 export const deleteUser = async (req, res) => {
     try {
         const user = await User.findById(req.params.id);
@@ -125,9 +115,6 @@ export const deleteUser = async (req, res) => {
     }
 };
 
-// @desc    Update user profile
-// @route   PUT /api/users/:id
-// @access  Private
 export const updateUserProfile = async (req, res) => {
     try {
         const user = await User.findById(req.params.id);
@@ -137,6 +124,12 @@ export const updateUserProfile = async (req, res) => {
             user.email = req.body.email || user.email;
             user.phone = req.body.phone || user.phone;
             user.address = req.body.address || user.address;
+
+            // --- FIX: Handle the 'isVerified' status sent from the admin dashboard ---
+            if (req.body.isVerified !== undefined) {
+                user.isVerified = req.body.isVerified;
+            }
+            // --- END FIX ---
             
             // Handle merging nested farmerDetails
             if (user.role === 'seller' && req.body.farmerDetails) {
@@ -154,7 +147,8 @@ export const updateUserProfile = async (req, res) => {
                     role: updatedUser.role,
                     phone: updatedUser.phone,
                     address: updatedUser.address,
-                    farmerDetails: updatedUser.farmerDetails
+                    farmerDetails: updatedUser.farmerDetails,
+                    isVerified: updatedUser.isVerified // Also return the updated status
                 }
             });
         } else {

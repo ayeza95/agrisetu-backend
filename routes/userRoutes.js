@@ -1,7 +1,5 @@
 import express from 'express';
 import { signup, login, getAllUsers, deleteUser, updateUserProfile } from '../Controllers/userController.js';
-// You would add admin and protect middleware here in a real app
-// import { protect, admin } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 

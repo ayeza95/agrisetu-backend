@@ -6,7 +6,6 @@ import User from "../models/User.js";
 
 const router = express.Router();
 
-// GET /api/crops - Get all available crops (for buyers)
 router.get("/", async (req, res) => {
     try {
         console.log("[API] Fetching all available crops");
@@ -18,11 +17,10 @@ router.get("/", async (req, res) => {
     }
 });
 
-// GET /api/crops/pending - Get all pending crops (for admin)
 router.get("/pending", async (req, res) => {
     try {
         console.log("[API] Fetching all pending crops for admin approval");
-        // You might want to add middleware here later to ensure only admins can access this
+
         const pendingCrops = await Crop.find({ status: 'pending_approval' }).populate('farmer', 'name');
         res.json(pendingCrops);
     } catch (err) {
@@ -31,7 +29,6 @@ router.get("/pending", async (req, res) => {
     }
 });
 
-// POST /api/crops - Add new crop (for farmers)
 router.post("/", async (req, res) => {
     try {
         console.log("[API] Received POST request for /api/crops");
@@ -73,7 +70,6 @@ router.post("/", async (req, res) => {
 });
 
 
-// GET /api/crops/farmer/:farmerId - Get crops by specific farmer
 router.get("/farmer/:farmerId", async (req, res) => {
     try {
         const { farmerId } = req.params;
@@ -87,7 +83,6 @@ router.get("/farmer/:farmerId", async (req, res) => {
     }
 });
 
-// PUT /api/crops/:id - Update crop
 router.put("/:id", async (req, res) => {
     try {
         const { id } = req.params;
@@ -106,7 +101,6 @@ router.put("/:id", async (req, res) => {
     }
 });
 
-// DELETE /api/crops/:id - Delete crop
 router.delete("/:id", async (req, res) => {
     try {
         const { id } = req.params;
